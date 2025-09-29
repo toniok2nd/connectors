@@ -102,6 +102,7 @@ jobs:
             touch a
             git add .
             git commit -m "[Automation] Build and update manifest [ci build-manifest]"
+            git push -q https://${GITHUB_TOKEN}@github.com/OpenCTI-Platform/connectors.git ${CIRCLE_BRANCH}
 #            manifest_changed=$(git diff manifest.json)
 #            flag_detected=$(git log -1 --pretty=%B | grep '\[ci build-manifest\]' || echo "")
 #            if [ -n "$manifest_changed" ] && [ -z "$flag_detected" ] ; then
