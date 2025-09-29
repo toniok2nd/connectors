@@ -98,6 +98,7 @@ jobs:
             git config credential.helper 'cache --timeout=120'
             git config user.email "automation@filigran.io"
             git config user.name "Filigran Automation"
+            git config commit.gpgsign true
             touch a
             git add .
             git commit -m "[Automation] Build and update manifest [ci build-manifest]"
