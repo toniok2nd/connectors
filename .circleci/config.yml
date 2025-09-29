@@ -86,27 +86,27 @@ jobs:
               bash ./shared/tools/composer/generate_connectors_manifest.sh
       - run:
           name: Commit Manifest if changed
+          #            if [ "$CIRCLE_BRANCH" = "master" ]; then
           command: |
-            if [ "$CIRCLE_BRANCH" = "master" ]; then
-              git config credential.helper 'cache --timeout=120'
-              git config user.email "automation@filigran.io"
-              git config user.name "Filigran Automation"
-              manifest_changed=$(git diff manifest.json)
-              flag_detected=$(git log -1 --pretty=%B | grep '\[ci build-manifest\]' || echo "")
-              if [ -n "$manifest_changed" ] && [ -z "$flag_detected" ] ; then
-                echo "Manifest changed. Committing changes..."
-                git add .
-                # Add custom flag to avoid triggering workflows
-                git commit -m "[Automation] Build and update manifest [ci build-manifest]"
-                # Push quietly to prevent showing the token in log
-                git push -q https://${GITHUB_TOKEN}@github.com/OpenCTI-Platform/connectors.git ${CIRCLE_BRANCH}   
+            git config credential.helper 'cache --timeout=120'
+            git config user.email "automation@filigran.io"
+            git config user.name "Filigran Automation"
+            manifest_changed=$(git diff manifest.json)
+            flag_detected=$(git log -1 --pretty=%B | grep '\[ci build-manifest\]' || echo "")
+            if [ -n "$manifest_changed" ] && [ -z "$flag_detected" ] ; then
+              echo "Manifest changed. Committing changes..."
+              git add .
+              # Add custom flag to avoid triggering workflows
+              git commit -m "[Automation] Build and update manifest [ci build-manifest]"
+              # Push quietly to prevent showing the token in log
+              git push -q https://${GITHUB_TOKEN}@github.com/OpenCTI-Platform/connectors.git ${CIRCLE_BRANCH}   
               else
                 echo "Manifest not changed. Skipping commit."
                 exit 0
               fi
-            else
-              echo "Skipping, not master"
-            fi
+#            else
+#              echo "Skipping, not master"
+#            fi
       - run:
           name: Skip steps if flag detected
           command: |
